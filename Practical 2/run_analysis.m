@@ -46,8 +46,8 @@ end
 function iter_matrix = mandelbrot_serial(max_iter, img_size) %Add necessary input arguments
     
     % Extract the image dimensions
-    n_x = img_size(1);
-    n_y = img_size(2);
+    n_x = img_size(2);
+    n_y = img_size(1);
     empty_matrix = zeros(n_x,n_y);
    
     % Using the defined standard region of the Mandelbrot set
@@ -90,8 +90,8 @@ end
 function iter_matrix = mandelbrot_parallel(max_iter, img_size) %Add necessary input arguments 
     
     % Extract the image dimensions
-    n_x = img_size(1);
-    n_y = img_size(2);
+    n_x = img_size(2);
+    n_y = img_size(1);
     empty_matrix = zeros(n_x,n_y);
 
     % Using the defined standard region of the Mandelbrot set
@@ -132,7 +132,7 @@ end
 % Compare the performance of serial Mandelbrot set computation
 % with parallel Mandelbrot set computation.
 
-function run_analysis()
+function run_analysisf()
     %Array conatining all the image sizes to be tested
     image_sizes = [
         [800,600],   %SVGA
@@ -303,3 +303,5 @@ function run_analysis()
     grid on;
 
 end
+
+run_analysisf();
