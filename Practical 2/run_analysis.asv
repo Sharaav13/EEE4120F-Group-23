@@ -155,13 +155,11 @@ function run_analysisf()
     
     image_names = {"SVGA","HD","Full HD","2K Cinema","2K QHD","4K UHD","5K","8K UHD"};
     
-    repetitions = 10; % Number of times to repeat a specific benchmark test
+    repetitions = 4; % Number of times to repeat a specific benchmark test
     
     max_workers = feature('numcores');
     
-    num_images = 8;
-
-    choosen_image = 3;
+    num_images = 3;
 
     % Cell arrays for storing results
     time_serial_results = zeros(1,num_images);
@@ -169,6 +167,8 @@ function run_analysisf()
     speedup_results = cell(1,num_images);
     efficiency_results = cell(1,num_images);
     
+    num_images = 8;
+
     for i = 1:num_images % Test for all 8 image sizes
         
         % Determine serial execution time
@@ -188,8 +188,8 @@ function run_analysisf()
         speedup = zeros(max_workers-1,1);
         efficiency = zeros(max_workers-1,1);
         
-        for n = 2:max_workers
-            %n = 2;
+        %for n = 2:max_workers
+            n = 2;
             % Parallelisation setting up
             p = gcp('nocreate');
             if ~isempty(p)
@@ -215,7 +215,7 @@ function run_analysisf()
             % if (n == max_workers)
             %     mandelbrot_plot(iteration_matrix_parallel, max_iterations, image_names{i}, n);
             % end
-        end
+        %end
 
         delete(gcp('nocreate')); % Close the pool
         
@@ -238,9 +238,9 @@ function run_analysisf()
     disp(efficiency_results);
    
     % Average all Parallel computation results
-    av_time_parallel = zeros(1,num_images);
-    av_speedup = zeros(1,num_images);
-    av_efficiency = zeros(1,num_images);
+    av_time_parallel = zeros(num_images,1);
+    av_speedup = zeros(num_images,1);
+    av_efficiency = zeros(num_images,1);
     for i = 1:num_images
         av_time_parallel(i) = mean(time_parallel_results{i});
         av_speedup(i) = mean(speedup_results{i});
@@ -248,23 +248,23 @@ function run_analysisf()
     end
 
     % Plot double bar graph for execution times (average parallel case)
-    Y1 = [time_serial_results(:) av_time_parallel(:)];   % Nx2 matrix
-    figure
-    b = bar(Y1,'grouped');
-    b(1).FaceColor = [0.2 0.6 0.8];   % Serial
-    b(2).FaceColor = [0.9 0.4 0.3];   % Parallel
-    xticks(1:num_images)
-    xticklabels(image_names(1:num_images))
-    xlabel('Image Resolutions')
-    ylabel('Execution Time (s)')
-    title('Serial vs Parallel Execution Time')
-    legend({'Serial','Parallel'},'Location','best')
-    grid on
+    Y1 = [time_serial_results av_time_parallel];
+    figure;
+    b1 = bar(Y1);               
+    b1(1).FaceColor = [0.2 0.6 0.8];
+    b1(2).FaceColor = [0.9 0.4 0.3];
+    legend({'Serial','Parallel'}, 'Location','best');
+    xticks(1:size(Y1,1));
+    xticklabels(image_names);
+    xlabel('Image Resolutions');
+    ylabel('Execution Time (s)');
+    title('Double Bar Graph showing the Execution Times of the Serial and Parallel Mandelbrot implementation for each Image Resolution');
+    grid on;
 
     % Plot bar graph for speedup
     figure;
     bar(av_speedup);               
-    xticklabels(image_names(1:num_images))
+    xticks(1:num_images);
     xticklabels(image_names);
     xlabel('Image Resolutions');
     ylabel('Speed Up/Slow down');
@@ -274,7 +274,7 @@ function run_analysisf()
     % Plot bar graph for efficiency
     figure;
     bar(av_efficiency);               
-    xticklabels(image_names(1:num_images))
+    xticks(1:num_images);
     xticklabels(image_names);
     xlabel('Image Resolutions');
     ylabel('Efficiency (%)');
@@ -283,7 +283,7 @@ function run_analysisf()
     
     % Plot Influence of Parallel workers on execution time
     figure;
-    plot(2:max_workers, time_parallel_results{choosen_image}) % Full HD is the most common image size
+    plot(2:max_workers, time_parallel_results{3}) % Full HD is the most common image size
     xlabel('Number of workers/cores');
     ylabel('Execution Time (s)');
     title('Execution Time versus Parallel worker/cores for a Full HD Mandelbrot image');
@@ -291,7 +291,7 @@ function run_analysisf()
 
     % Plot Influence of Parallel workers on speedup
     figure;
-    plot(2:max_workers, speedup_results{choosen_image}) % Full HD is the most common image size
+    plot(2:max_workers, speedup_results{3}) % Full HD is the most common image size
     hold on
     plot(2:max_workers, 2:max_workers,'--');
     hold off
@@ -303,13 +303,12 @@ function run_analysisf()
 
     % Plot Influence of Parallel workers on efficiency
     figure;
-    plot(2:max_workers, efficiency_results{choosen_image}) % Full HD is the most common image size
+    plot(2:max_workers, efficiency_results{3}) % Full HD is the most common image size
     xlabel('Number of workers/cores');
     ylabel('Efficiency (%)');
     title('Efficiency versus Parallel worker/cores for a Full HD Mandelbrot image');
     grid on;
-    
-    save('results.mat', 'time_serial_results', 'time_parallel_results', 'speedup_results', 'efficiency_results');
+
 end
 
 run_analysisf();
