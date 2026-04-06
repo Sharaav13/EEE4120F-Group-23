@@ -82,6 +82,75 @@ best_route = {
 procs1 = [1 2 4 8];
 procs2 = [2 4 8];
 
+f_omp = 0.95;
+f_mpi = 0.825;
+amdahl2_omp = 1./((1-f_omp)+f_omp./procs2);
+amdahl2_mpi = 1./((1-f_mpi)+f_mpi./procs2);
+
+% OpenMP computational speedup vs Number of processors (compared to Amdahls'law)
+f11 = figure;
+for i = 1:7
+    temp_comp_speedup_omp = [comp_speedup_omp{1}(i) comp_speedup_omp{2}(i) comp_speedup_omp{3}(i)];
+    plot(procs2, temp_comp_speedup_omp,'LineWidth',1 ,'LineStyle','-', 'Marker','o');
+    hold on;
+end
+plot(procs2, amdahl2_omp,'LineWidth',1 ,'LineStyle','--', 'Marker','o');
+hold off;
+grid on;
+title("OpenMP computational speedup vs Number of processors");
+xlabel("Number of processors");
+ylabel("Speedup");
+legend("N=4","N=5","N=6","N=7","N=8","N=9","N=10","Amdahl's Law");
+saveas(gcf, "comp_speedup_omp_amdahl.png");
+
+% OpenMP total speedup vs Number of processors (compared to Amdahls'law)
+f22 = figure;
+for i = 1:7
+    temp_tot_speedup_omp = [tot_speedup_omp{1}(i) tot_speedup_omp{2}(i) tot_speedup_omp{3}(i)];
+    plot(procs2, temp_tot_speedup_omp,'LineWidth',1 ,'LineStyle','-', 'Marker','o');
+    hold on;
+end
+plot(procs2, amdahl2_omp,'LineWidth',1 ,'LineStyle','--', 'Marker','o');
+hold off;
+grid on;
+title("OpenMP total speedup vs Number of processors");
+xlabel("Number of processors");
+ylabel("Speedup");
+legend("N=4","N=5","N=6","N=7","N=8","N=9","N=10","Amdahl's Law");
+saveas(gcf, "tot_speedup_omp_amdahl.png");
+
+% MPI computational speedup vs Number of processors (compared to Amdahls'law)
+f33 = figure;
+for i = 1:7
+    temp_comp_speedup_mpi = [comp_speedup_mpi{1}(i) comp_speedup_mpi{2}(i) comp_speedup_mpi{3}(i)];
+    plot(procs2, temp_comp_speedup_mpi,'LineWidth',1 ,'LineStyle','-', 'Marker','o');
+    hold on;
+end
+plot(procs2, amdahl2_mpi,'LineWidth',1 ,'LineStyle','--', 'Marker','o');
+hold off;
+grid on;
+title("MPI computational speedup vs Number of processors");
+xlabel("Number of processors");
+ylabel("Speedup");
+legend("N=4","N=5","N=6","N=7","N=8","N=9","N=10","Amdahl's Law");
+saveas(gcf, "comp_speedup_mpi_amdahl.png");
+
+% MPI total speedup vs Number of processors (compared to Amdahls'law)
+f55 = figure;
+for i = 1:7
+    temp_tot_speedup_mpi = [tot_speedup_mpi{1}(i) tot_speedup_mpi{2}(i) tot_speedup_mpi{3}(i)];
+    plot(procs2, temp_tot_speedup_mpi,'LineWidth',1 ,'LineStyle','-', 'Marker','o');
+    hold on;
+end
+plot(procs2, amdahl2_mpi,'LineWidth',1 ,'LineStyle','--', 'Marker','o');
+hold off;
+grid on;
+title("MPI total speedup vs Number of processors");
+xlabel("Number of processors");
+ylabel("Speedup");
+legend("N=4","N=5","N=6","N=7","N=8","N=9","N=10","Amdahl's Law");
+saveas(gcf, "tot_speedup_mpi_amdahl.png");
+
 % OpenMP computational speedup vs Number of processors
 f1 = figure;
 for i = 1:7
@@ -92,6 +161,8 @@ end
 hold off;
 grid on;
 title("OpenMP computational speedup vs Number of processors");
+xlabel("Number of processors");
+ylabel("Speedup");
 legend("N=4","N=5","N=6","N=7","N=8","N=9","N=10");
 saveas(gcf, "comp_speedup_omp.png");
 
@@ -105,6 +176,8 @@ end
 hold off;
 grid on;
 title("OpenMP total speedup vs Number of processors");
+xlabel("Number of processors");
+ylabel("Speedup");
 legend("N=4","N=5","N=6","N=7","N=8","N=9","N=10");
 saveas(gcf, "tot_speedup_omp.png");
 
@@ -118,6 +191,8 @@ end
 hold off;
 grid on;
 title("MPI computational speedup vs Number of processors");
+xlabel("Number of processors");
+ylabel("Speedup");
 legend("N=4","N=5","N=6","N=7","N=8","N=9","N=10");
 saveas(gcf, "comp_speedup_mpi.png");
 
@@ -131,6 +206,8 @@ end
 hold off;
 grid on;
 title("MPI total speedup vs Number of processors");
+xlabel("Number of processors");
+ylabel("Speedup");
 legend("N=4","N=5","N=6","N=7","N=8","N=9","N=10");
 saveas(gcf, "tot_speedup_mpi.png");
 
@@ -144,6 +221,8 @@ end
 hold off;
 grid on;
 title("Computational speedup of OpenMP vs MPI");
+xlabel("Number of processors");
+ylabel("Speedup");
 legend("N=4","N=5","N=6","N=7","N=8","N=9","N=10");
 saveas(gcf, "comp_speedup.png");
 
@@ -157,6 +236,8 @@ end
 hold off;
 grid on;
 title("Total speedup of OpenMP vs MPI");
+xlabel("Number of processors");
+ylabel("Speedup");
 legend("N=4","N=5","N=6","N=7","N=8","N=9","N=10");
 saveas(gcf, "tot_speedup.png");
 
@@ -170,6 +251,8 @@ end
 hold off;
 grid on;
 title("OpenMP initialisation time vs Number of processors");
+xlabel("Number of processors");
+ylabel("Initialisation time (s)");
 legend("N=4","N=5","N=6","N=7","N=8","N=9","N=10");
 saveas(gcf, "tinit_omp.png");
 
@@ -183,5 +266,7 @@ end
 hold off;
 grid on;
 title("MPI initialisation time vs Number of processors");
+xlabel("Number of processors");
+ylabel("Initialisation time (s)");
 legend("N=4","N=5","N=6","N=7","N=8","N=9","N=10");
 saveas(gcf, "tinit_mpi.png");
