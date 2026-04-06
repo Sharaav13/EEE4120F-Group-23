@@ -13,16 +13,16 @@ tcomp_omp = { % N=4    % N=5    % N=6     % N=7   % N=8     % N=9     % N=10
             [0.000384 0.000389 0.000415 0.000335 0.000536 0.000423 0.000751]; % 8 procs
             };
 
-ttot_omp = cell(4);
+ttot_omp = cell(4,1);
 for o1 = 1:4
-    ttot_omp(o1) = tinit_omp(o1) + tcomp_omp(o1); 
+    ttot_omp{o1} = tinit_omp{o1} + tcomp_omp{o1}; 
 end
 
-comp_speedup_omp = cell(3);
-tot_speedup_omp = cell(3);
+comp_speedup_omp = cell(3,1);
+tot_speedup_omp = cell(3,1);
 for o2 = 2:4
-    comp_speedup_omp(o2-1) = tcomp_omp(1)./tcomp_omp(o2); 
-    tot_speedup_omp(o2-1) = ttot_omp(1)./ttot_omp(o2);
+    comp_speedup_omp{o2-1} = tcomp_omp{1}./tcomp_omp{o2}; 
+    tot_speedup_omp{o2-1} = ttot_omp{1}./ttot_omp{o2};
 end
 
 %% MPI results
@@ -34,22 +34,34 @@ tinit_mpi = { % N=4    % N=5    % N=6     % N=7   % N=8     % N=9     % N=10
             };
 
 tcomp_mpi = { % N=4    % N=5    % N=6     % N=7   % N=8     % N=9     % N=10
-            [0.000000 0.000001 0.000002 0.000009 0.000024 0.000126 0.000567];  % 1 proc
+            [0.0000004 0.000001 0.000002 0.000009 0.000024 0.000126 0.000567];  % 1 proc
             [0.000001 0.000003 0.000004 0.000009 0.000028 0.000109 0.000606]; % 2 procs
             [0.000005 0.000008 0.000010 0.000014 0.000033 0.000123 0.000628]; % 4 procs
             [0.000017 0.000021 0.000015 0.000047 0.000099 0.000135 0.000730]; % 8 procs
             };
 
-ttot_mpi = cell(4);
+ttot_mpi = cell(4,1);
 for m1 = 1:4
-    ttot_mpi(m1) = tinit_mpi(m1) + tcomp_mpi(m1); 
+    ttot_mpi{m1} = tinit_mpi{m1} + tcomp_mpi{m1}; 
 end
 
-comp_speedup_mpi = cell(3);
-tot_speedup_mpi = cell(3);
+comp_speedup_mpi = cell(3,1);
+tot_speedup_mpi = cell(3,1);
 for m2 = 2:4
-    comp_speedup_mpi(m2-1) = tcomp_mpi(1)./tcomp_mpi(m2); 
-    tot_speedup_mpi(m2-1) = ttot_mpi(1)./ttot_mpi(m2);
+    comp_speedup_mpi{m2-1} = tcomp_mpi{1}./tcomp_mpi{m2}; 
+    tot_speedup_mpi{m2-1} = ttot_mpi{1}./ttot_mpi{m2};
+end
+
+%% OpenMP vs MPI results
+
+comp_speedup = cell(4,1);
+for v1 = 1:4
+    comp_speedup{v1} = tcomp_omp{v1}./tcomp_mpi{v1}; 
+end
+
+tot_speedup = cell(4,1);
+for v2 = 1:4
+    tot_speedup{v2} = ttot_omp{v2}./ttot_mpi{v2}; 
 end
 
 %% Problem results
@@ -66,3 +78,110 @@ best_route = {
             };
 
 %% Data plots
+
+procs1 = [1 2 4 8];
+procs2 = [2 4 8];
+
+% OpenMP computational speedup vs Number of processors
+f1 = figure;
+for i = 1:7
+    temp_comp_speedup_omp = [comp_speedup_omp{1}(i) comp_speedup_omp{2}(i) comp_speedup_omp{3}(i)];
+    plot(procs2, temp_comp_speedup_omp,'LineWidth',1 ,'LineStyle','-', 'Marker','o');
+    hold on;
+end
+hold off;
+grid on;
+title("OpenMP computational speedup vs Number of processors");
+legend("N=4","N=5","N=6","N=7","N=8","N=9","N=10");
+saveas(gcf, "comp_speedup_omp.png");
+
+% OpenMP total speedup vs Number of processors
+f2 = figure;
+for i = 1:7
+    temp_tot_speedup_omp = [tot_speedup_omp{1}(i) tot_speedup_omp{2}(i) tot_speedup_omp{3}(i)];
+    plot(procs2, temp_tot_speedup_omp,'LineWidth',1 ,'LineStyle','-', 'Marker','o');
+    hold on;
+end
+hold off;
+grid on;
+title("OpenMP total speedup vs Number of processors");
+legend("N=4","N=5","N=6","N=7","N=8","N=9","N=10");
+saveas(gcf, "tot_speedup_omp.png");
+
+% MPI computational speedup vs Number of processors
+f3 = figure;
+for i = 1:7
+    temp_comp_speedup_mpi = [comp_speedup_mpi{1}(i) comp_speedup_mpi{2}(i) comp_speedup_mpi{3}(i)];
+    plot(procs2, temp_comp_speedup_mpi,'LineWidth',1 ,'LineStyle','-', 'Marker','o');
+    hold on;
+end
+hold off;
+grid on;
+title("MPI computational speedup vs Number of processors");
+legend("N=4","N=5","N=6","N=7","N=8","N=9","N=10");
+saveas(gcf, "comp_speedup_mpi.png");
+
+% MPI total speedup vs Number of processors
+f5 = figure;
+for i = 1:7
+    temp_tot_speedup_mpi = [tot_speedup_mpi{1}(i) tot_speedup_mpi{2}(i) tot_speedup_mpi{3}(i)];
+    plot(procs2, temp_tot_speedup_mpi,'LineWidth',1 ,'LineStyle','-', 'Marker','o');
+    hold on;
+end
+hold off;
+grid on;
+title("MPI total speedup vs Number of processors");
+legend("N=4","N=5","N=6","N=7","N=8","N=9","N=10");
+saveas(gcf, "tot_speedup_mpi.png");
+
+% Computational speedup of OpenMP vs MPI
+f6 = figure;
+for i = 1:7
+    temp_comp_speedup = [comp_speedup{1}(i) comp_speedup{2}(i) comp_speedup{3}(i) comp_speedup{4}(i)];
+    plot(procs1, temp_comp_speedup,'LineWidth',1 ,'LineStyle','-', 'Marker','o');
+    hold on;
+end
+hold off;
+grid on;
+title("Computational speedup of OpenMP vs MPI");
+legend("N=4","N=5","N=6","N=7","N=8","N=9","N=10");
+saveas(gcf, "comp_speedup.png");
+
+% Total speedup of OpenMP vs MPI
+f4 = figure;
+for i = 1:7
+    temp_tot_speedup = [tot_speedup{1}(i) tot_speedup{2}(i) tot_speedup{3}(i) tot_speedup{4}(i)];
+    plot(procs1, temp_tot_speedup,'LineWidth',1 ,'LineStyle','-', 'Marker','o');
+    hold on;
+end
+hold off;
+grid on;
+title("Total speedup of OpenMP vs MPI");
+legend("N=4","N=5","N=6","N=7","N=8","N=9","N=10");
+saveas(gcf, "tot_speedup.png");
+
+% OpenMP initialisation time vs Number of processors
+f7 = figure;
+for i = 1:7
+    temp_tinit_omp = [tinit_omp{1}(i) tinit_omp{2}(i) tinit_omp{3}(i) tinit_omp{4}(i)];
+    plot(procs1, temp_tinit_omp,'LineWidth',1 ,'LineStyle','-', 'Marker','o');
+    hold on;
+end
+hold off;
+grid on;
+title("OpenMP initialisation time vs Number of processors");
+legend("N=4","N=5","N=6","N=7","N=8","N=9","N=10");
+saveas(gcf, "tinit_omp.png");
+
+% MPI initialisation time vs Number of processors
+f8 = figure;
+for i = 1:7
+    temp_tinit_mpi = [tinit_mpi{1}(i) tinit_mpi{2}(i) tinit_mpi{3}(i) tinit_mpi{4}(i)];
+    plot(procs1, temp_tinit_mpi,'LineWidth',1 ,'LineStyle','-', 'Marker','o');
+    hold on;
+end
+hold off;
+grid on;
+title("MPI initialisation time vs Number of processors");
+legend("N=4","N=5","N=6","N=7","N=8","N=9","N=10");
+saveas(gcf, "tinit_mpi.png");
