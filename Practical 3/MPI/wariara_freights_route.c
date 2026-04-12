@@ -2,11 +2,11 @@
 // Practical 3: Minimum Energy Consumption Freight Route Optimization
 // =========================================================================
 //
-// GROUP NUMBER:
+// GROUP NUMBER: 23
 //
 // MEMBERS:
-//   - Member 1 Name, Student Number
-//   - Member 2 Name, Student Number
+//   - Member 1 Max Mendelow, MNDMAX003
+//   - Member 2 Sharaav Dhebideen, DHBSHA001
 
 // ========================================================================
 //  PART 2: Minimum Energy Consumption Freight Route Optimization using OpenMPI
