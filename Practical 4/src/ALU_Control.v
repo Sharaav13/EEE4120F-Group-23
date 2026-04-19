@@ -2,11 +2,11 @@
 // Practical 4: StarCore-1 — Single-Cycle Processor in Verilog
 // =========================================================================
 //
-// GROUP NUMBER:
+// GROUP NUMBER: 23
 //
 // MEMBERS:
-//   - Member 1 Name, Student Number
-//   - Member 2 Name, Student Number
+//   - Member 1 Max Mendelow, MNDMAX003
+//   - Member 2 Sharaav Dhebideen, DHBSHA001
 
 // File        : ALU_Control.v
 // Description : ALU Control Unit.
@@ -34,8 +34,8 @@ module ALU_Control (
     // TODO: Concatenate ALUOp and Opcode into a single 6-bit control word so
     //       you can use a casex statement with don't-care bits.
     //
-    //       wire [5:0] control_in;
-    //       assign control_in = {ALUOp, Opcode};
+        wire [5:0] control_in; // Creates a 6 bit (index 5 is MSB and index 0 is LSB) physical connection or wire
+        assign control_in = {ALUOp, Opcode}; // Concatenate both input values through to control_in.
     //
     //       The casex truth table (from Section 3.4 of the manual):
     //
@@ -54,13 +54,21 @@ module ALU_Control (
     //       default    |  3'b000 | ADD (safe)  | reserved / undefined
     //
     //       Implement using:
-    //           always @(*) begin
-    //               casex (control_in)
-    //                   6'b10xxxx : ALU_Cnt = 3'b000;
-    //                   ...
-    //                   default   : ALU_Cnt = 3'b000;
-    //               endcase
-    //           end
+               always @(*) begin
+                   casex (control_in)
+                       6'b10xxxx : ALU_Cnt = 3'b000; // ADD         | LD, ST
+                       6'b01xxxx : ALU_Cnt = 3'b001; // SUB         | BEQ, BNE
+                       6'b000010 : ALU_Cnt = 3'b000; // ADD         | ADD
+                       6'b000011 : ALU_Cnt = 3'b001; // SUB         | SUB
+                       6'b000100 : ALU_Cnt = 3'b010; // INV (NOT)   | INV
+                       6'b000101 : ALU_Cnt = 3'b011; // SHL         | SHL
+                       6'b000110 : ALU_Cnt = 3'b100; // SHR         | SHR
+                       6'b000111 : ALU_Cnt = 3'b101; // AND         | AND
+                       6'b001000 : ALU_Cnt = 3'b110; // OR          | OR
+                       6'b001001 : ALU_Cnt = 3'b111; // SLT         | SLT
+                       default   : ALU_Cnt = 3'b000; // ADD (safe)  | reserved / undefined
+                   endcase
+               end
     //
     //       IMPORTANT: The 'x' in casex patterns matches any logic value
     //       (0, 1, X, or Z). This correctly encodes don't-care bits for the
