@@ -35,7 +35,7 @@ module ALU (
     //
     //       assign zero = ...;
     // -------------------------------------------------------------------------
-
+    assign zero = (result == 16'd0) ? 1'b1 : 1'b0;
     // -------------------------------------------------------------------------
     // TODO: Implement the ALU operations using a combinational always block.
     //
@@ -61,6 +61,20 @@ module ALU (
     //       treats reg/wire values as unsigned by default. This is correct
     //       for the StarCore ISA.
     // -------------------------------------------------------------------------
+    always @(*) begin
+        case(alu_control)
+        3'b000: result=a+b;
+        3'b001: result=a-b;
+        3'b010: result=~a;
+        3'b010: result = a << b[3:0];
+        3'b100: result = a >> b[3:0];                    // SHR
+        3'b101: result = a & b;                          // AND
+        3'b110: result = a | b;                          // OR
+        3'b111: result = (a < b) ? 16'd1 : 16'd0;       // SLT (unsigned)
+        default: result = a + b;                         // safe fallback
+        endcase
+    end
 
+    
 
 endmodule

@@ -1,0 +1,28 @@
+efficiencyMatrix=cell2mat(efficiency_results);
+
+numWorkers = {2,3,4,5,6,7,8};
+efficiencyData = table2array(speedupTable(:,1:end));
+
+% Resolution labels
+numMegaPixels= [0.48,0.92,2.07,2.21,3.69,8.29,14.75,33.18];
+
+% Amdahls Law - assume f (parallel fraction) close to 1
+
+
+% Plot
+figure;
+hold on;
+
+% Plot each resolution
+for i = 1:8
+    plot(workers, efficiencyData(:,i), '-o', 'DisplayName', resLabels{i}, 'LineWidth', 1.5);
+end
+
+
+% Formatting
+xlabel('Number of Workers');
+ylabel('Efficiency');
+title('Efficiency vs Number of Workers for Parallel Mandelbrot Computation');
+legend('Location', 'northwest');
+grid on;
+hold off;
