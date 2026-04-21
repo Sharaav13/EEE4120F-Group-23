@@ -33,7 +33,7 @@ module InstructionMemory (
     //       reg [`COL-1:0] memory [`ROW_I-1:0];
     // -------------------------------------------------------------------------
 
-
+            reg [`COL-1:0] memory [`ROW_I-1:0];
     // -------------------------------------------------------------------------
     // TODO: Derive the word address from the byte-addressed PC.
     //
@@ -44,11 +44,11 @@ module InstructionMemory (
     //
     //       This discards the byte-select bit (pc[0], always 0 for aligned
     //       accesses) and maps the byte address to a word index:
-    //           PC=0x0000 -> rom_addr=0
+    //              PC=0x0000 -> rom_addr=0
     //           PC=0x0002 -> rom_addr=1
     //           PC=0x0004 -> rom_addr=2   ... and so on.
     // -------------------------------------------------------------------------
-
+    wire [3:0] rom_addr = pc[4:1]; //The PC is byte-addressed but the memory array is word-indexed, therefore byte 0 and 1 of the PC refers to the same word - we can divide by 2
 
     // -------------------------------------------------------------------------
     // TODO: Load the instruction memory contents from file at simulation start.
@@ -63,13 +63,15 @@ module InstructionMemory (
     //       end indices in the array to fill. Adjust if your program is longer.
     // -------------------------------------------------------------------------
 
-
+    initial begin
+              $readmemb("./test/test.prog", memory, 0, 14);
+           end
     // -------------------------------------------------------------------------
     // TODO: Drive the instruction output with a continuous assignment.
     //       The output must update combinationally whenever rom_addr changes.
     //
     //       assign instruction = memory[rom_addr];
     // -------------------------------------------------------------------------
-
+    assign instruction = memory[rom_addr];
 
 endmodule

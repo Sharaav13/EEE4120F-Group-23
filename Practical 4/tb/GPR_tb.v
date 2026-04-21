@@ -120,6 +120,32 @@ module GPR_tb;
         //       Suggested values: R0=0xA000, R1=0xB001, R2=0xC002, R3=0xD003,
         //                         R4=0xE004, R5=0xF005, R6=0x1006, R7=0x2007
 
+        // Unique test values for R0-R7
+        reg [15:0] test_values [7:0];
+        test_values[0] = 16'hA000;
+        test_values[1] = 16'hB001;
+        test_values[2] = 16'hC002;
+        test_values[3] = 16'hD003;
+        test_values[4] = 16'hE004;
+        test_values[5] = 16'hF005;
+        test_values[6] = 16'h1006;
+        test_values[7] = 16'h2007;
+
+        for (i = 0; i < 8; i = i + 1) begin
+
+            // Synchronous write
+            reg_write_en   = 1'b1;
+            reg_write_dest = i[2:0];
+            reg_write_data = test_values[i];
+            @(posedge clk); #1;       // commit the write on clock edge
+            reg_write_en   = 1'b0;
+
+            // Asynchronous read back
+            reg_read_addr_1 = i[2:0];
+            #2;                        // wait for read to settle
+            check16(reg_read_data_1, test_values[i], test_id);
+            test_id = test_id + 1;
+        end
 
         // ------------------------------------------------------------------
         // TEST GROUP 2: Write with reg_write_en = 0 must NOT change register
@@ -138,6 +164,29 @@ module GPR_tb;
         //           check16(reg_read_data_1, 16'hA000, test_id);  // original value
         //           test_id = test_id + 1;
 
+        // Attempt to overwrite R0 with 0xDEAD while write enable is LOW
+        reg_write_en   = 1'b0;
+        reg_write_dest = 3'd0;
+        reg_write_data = 16'hDEAD;
+        @(posedge clk); #1;
+
+        // R0 should still hold its original value 0xA000
+        reg_read_addr_1 = 3'd0;
+        #2;
+        check16(reg_read_data_1, 16'hA000, test_id);
+        test_id = test_id + 1;
+
+        // Attempt to overwrite R7 with 0xBEEF while write enable is LOW
+        reg_write_en   = 1'b0;
+        reg_write_dest = 3'd7;
+        reg_write_data = 16'hBEEF;
+        @(posedge clk); #1;
+
+        // R7 should still hold its original value 0x2007
+        reg_read_addr_1 = 3'd7;
+        #2;
+        check16(reg_read_data_1, 16'h2007, test_id);
+        test_id = test_id + 1;
 
         // ------------------------------------------------------------------
         // TEST GROUP 3: Simultaneous read from two different registers
@@ -152,7 +201,26 @@ module GPR_tb;
         //           #2;
         //           check16(reg_read_data_1, 16'hB001, test_id); test_id=test_id+1;
         //           check16(reg_read_data_2, 16'hD003, test_id); test_id=test_id+1;
+        // Read R1 and R3 simultaneously
+        reg_read_addr_1 = 3'd1;     // R1 should hold 0xB001
+        reg_read_addr_2 = 3'd3;     // R3 should hold 0xD003
+        #2;                          // wait for async reads to settle
+        check16(reg_read_data_1, 16'hB001, test_id); test_id = test_id + 1;
+        check16(reg_read_data_2, 16'hD003, test_id); test_id = test_id + 1;
 
+        // Read R0 and R7 simultaneously (opposite ends of register file)
+        reg_read_addr_1 = 3'd0;     // R0 should hold 0xA000
+        reg_read_addr_2 = 3'd7;     // R7 should hold 0x2007
+        #2;
+        check16(reg_read_data_1, 16'hA000, test_id); test_id = test_id + 1;
+        check16(reg_read_data_2, 16'h2007, test_id); test_id = test_id + 1;
+
+        // Read same register on both ports simultaneously
+        reg_read_addr_1 = 3'd4;     // R4 should hold 0xE004
+        reg_read_addr_2 = 3'd4;     // same register on port 2
+        #2;
+        check16(reg_read_data_1, 16'hE004, test_id); test_id = test_id + 1;
+        check16(reg_read_data_2, 16'hE004, test_id); test_id = test_id + 1;
 
         // ------------------------------------------------------------------
         // TEST GROUP 4: Read during write (write-before-read behaviour)
@@ -177,7 +245,28 @@ module GPR_tb;
         //           #2;
         //           check16(reg_read_data_1, 16'hNEW_VALUE, test_id); // after write
         //           test_id = test_id + 1;
+        
+        // Set up a write to R2 with a new value
+        reg_write_en    = 1'b1;
+        reg_write_dest  = 3'd2;
+        reg_write_data  = 16'hF0F0;
+        reg_read_addr_1 = 3'd2;     // read address matches write destination
+        #2;                          // before clock edge — read should return OLD value
+        $display("INFO [T%0d]: Read during write = 0x%h (should be old value 0xC002)",
+                test_id, reg_read_data_1);
+        check16(reg_read_data_1, 16'hC002, test_id);  // old value before write commits
+        test_id = test_id + 1;
 
+        // Now commit the write
+        @(posedge clk); #1;
+        reg_write_en = 1'b0;
+
+        // After clock edge — read should now return NEW value
+        #2;
+        check16(reg_read_data_1, 16'hNEWW, test_id);  // new value after write commits
+        $display("INFO [T%0d]: Read after write  = 0x%h (should be new value 0xF0F0)",
+                test_id, reg_read_data_1);
+        test_id = test_id + 1;
 
         // ------------------------------------------------------------------
         // Summary

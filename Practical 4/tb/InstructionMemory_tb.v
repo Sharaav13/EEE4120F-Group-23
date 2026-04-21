@@ -47,6 +47,23 @@ module InstructionMemory_tb;
         //       expected[1]  = 16'bXXXXXXXXXXXXXXXX;
         //       ... (fill all 15)
 
+        expected[0]  = 16'b0000010000000000;   // LD  R2, 0(R2)
+        expected[1]  = 16'b0000010001000001;   // LD  R2, 1(R2)
+        expected[2]  = 16'b0010000001010000;   // ADD R2, R0, R1  (wait, let me decode)
+        expected[3]  = 16'b0001001010000000;   // ST
+        expected[4]  = 16'b0011000001010000;   // SUB
+        expected[5]  = 16'b0111000001010000;   // AND
+        expected[6]  = 16'b1000000001010000;   // OR
+        expected[7]  = 16'b1001000001010000;   // SLT
+        expected[8]  = 16'b0010000000000000;   // ADD
+        expected[9]  = 16'b1011000001000001;   // BEQ
+        expected[10] = 16'b1100000001000000;   // BNE
+        expected[11] = 16'b1101000000000000;   // JMP
+        expected[12] = 16'b0000000000000000;   // NOP
+        expected[13] = 16'b0000000000000000;   // NOP
+        expected[14] = 16'b0000000000000000;   // NOP
+        expected[15] = 16'b0000000000000000;   // NOP (padding)
+
         // TODO: Walk PC through addresses 0, 2, 4, ... 28 (14 instructions).
         //       At each address, verify instruction == expected[rom_index].
         //       Verify also that the output is combinational (no clock needed).
@@ -62,6 +79,20 @@ module InstructionMemory_tb;
         //
         //           pc = 16'd2; #5;
         //           ... and so on.
+        for (i = 0; i < 16; i = i + 1) begin
+        pc = i * 2;    // byte addresses: 0, 2, 4, 6 ... 30
+        #5;            // wait for combinational output to settle
+        
+        if (instruction !== expected[i]) begin
+            $display("FAIL [T%0d]: PC=%0d got %b exp %b",
+                    test_id, pc, instruction, expected[i]);
+            fail_count = fail_count + 1;
+        end else
+            $display("PASS [T%0d]: PC=%0d instr=%b", test_id, pc, instruction);
+        
+        test_id = test_id + 1;
+        end
+        
 
         $display("");
         if (fail_count == 0)

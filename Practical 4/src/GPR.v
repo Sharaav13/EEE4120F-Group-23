@@ -44,6 +44,7 @@ module GPR (
     //       reg [15:0] reg_array [7:0];
     // -------------------------------------------------------------------------
 
+    reg [15:0] reg_array [7:0];
 
     // -------------------------------------------------------------------------
     // TODO: Initialise all registers to zero at simulation start.
@@ -55,8 +56,11 @@ module GPR (
     //               reg_array[i] <= 16'd0;
     //       end
     // -------------------------------------------------------------------------
-
-
+    integer i;
+    initial begin
+        for (i = 0; i < 8; i = i + 1)
+                    reg_array[i] <= 16'd0;
+    end
     // -------------------------------------------------------------------------
     // TODO: Implement the synchronous write port.
     //       Write reg_write_data to reg_array[reg_write_dest] on the rising
@@ -71,6 +75,10 @@ module GPR (
     //                  This models a real flip-flop-based register.
     // -------------------------------------------------------------------------
 
+    always @(posedge clk) begin
+                    if (reg_write_en)
+                       reg_array[reg_write_dest] <= reg_write_data;
+               end
 
     // -------------------------------------------------------------------------
     // TODO: Implement the two asynchronous read ports.
@@ -85,6 +93,7 @@ module GPR (
     //       the read port returns the OLD value (before the write commits).
     //       Document this write-before-read behaviour in your report.
     // -------------------------------------------------------------------------
-
+    assign reg_read_data_1 = reg_array[reg_read_addr_1];
+    assign reg_read_data_2 = reg_array[reg_read_addr_2];
 
 endmodule
