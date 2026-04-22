@@ -73,13 +73,13 @@ module DataMemory (
     //       Optional — add a $fmonitor to log memory contents to a file.
     //       This is useful for verifying ST instructions during simulation:
     //
-       initial begin
-           log_fd = $fopen(`DMEM_LOG);
-           $fmonitor(log_fd, "t=%0t  [0]=%h [1]=%h [2]=%h [3]=%h",
-                     $time, memory[0], memory[1], memory[2], memory[3]);
-           `SIM_TIME;
-           $fclose(log_fd);
-       end
+    //   initial begin
+    //       log_fd = $fopen(`DMEM_LOG);
+    //       $fmonitor(log_fd, "t=%0t  [0]=%h [1]=%h [2]=%h [3]=%h",
+    //                 $time, memory[0], memory[1], memory[2], memory[3]);
+    //       `SIM_TIME;
+    //       $fclose(log_fd);
+    //   end
        // "log_fd" stores a number or ticket to access the actual file 
        // "$fopen()" only sends the ticket number
        // "$fmonitor" writes to the file
