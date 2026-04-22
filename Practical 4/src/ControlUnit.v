@@ -121,7 +121,7 @@ module ControlUnit (
                        end
     //
                        4'b1101: begin  // JMP
-                           // All control signals (e.g. RegDest, ALUSrc, etc. should be 0, the default values)
+                           jump = 1'b1;
                        end
     //
                        default: begin

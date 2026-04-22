@@ -66,7 +66,7 @@ module DataMemory (
     //
        integer log_fd;
        initial begin
-           $readmemb("./test/test.data", memory);
+           $readmemb("../test/test.data", memory);
        end
        // "initial begin" is used for a block of code that should run once upon simulation start
     //
