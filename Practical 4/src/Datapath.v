@@ -115,7 +115,7 @@ module Datapath (
            end
     //
     // TODO: Compute pc2 = pc_current + 16'd2 using a continuous assignment.
-            always pc2 = pc_current + 16'd2
+            assign pc2 = pc_current + 16'd2
 
     // =========================================================================
     // 2. INSTRUCTION MEMORY
