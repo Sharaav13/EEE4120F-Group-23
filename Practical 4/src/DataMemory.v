@@ -50,7 +50,12 @@ module DataMemory (
     //       The data memory is 8 words deep so only 3 address bits are needed.
     //       The ALU computes a byte address; use the lower 3 bits as the index:
     //
-        wire [2:0] ram_addr = mem_access_addr[2:0]; 
+        // wire [2:0] ram_addr = mem_access_addr[2:0];
+        wire [2:0] ram_addr;
+        assign ram_addr = mem_access_addr[2:0];
+        //always @(posedge clk) begin
+           // ram_addr <= mem_access_addr[2:0];
+        //end 
         // A word refers to the data being used/carried, hence this can be of any bit length 
     //
     //       This maps byte addresses 0,1,2,3,4,5,6,7 to words 0–7.
