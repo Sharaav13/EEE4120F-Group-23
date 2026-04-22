@@ -65,13 +65,101 @@ module DataMemory_tb;
         //       (Or use address 16'd0 -> word 0, address 16'd1 -> word 1,
         //        since only the lower 3 bits matter.)
         //
-        //       mem_read = 1'b1;
-        //       mem_access_addr = 16'd0; #5;
-        //       if (mem_read_data !== 16'h0001)  // expected value from test.data line 0
-        //           $display("FAIL [T%0d]: addr=0 got=0x%h exp=0x0001", test_id, mem_read_data);
-        //       else
-        //           $display("PASS [T%0d]", test_id);
-        //       test_id = test_id + 1;
+               // =========================================
+               // Checking address 0
+               mem_read = 1'b1; // Enable MemRd to read the stored data value
+               mem_access_addr = 16'd0; #5;
+               if (mem_read_data !== 16'h0001)  // expected value from test.data line 0
+                   $display("FAIL [T%0d]: addr=0 got=0x%h exp=0x0001", test_id, mem_read_data);
+                   fail_count = fail_count + 1;
+               else
+                   $display("PASS [T%0d]", test_id);
+               test_id = test_id + 1;
+               mem_read = 1'b0;
+             
+               // =========================================
+               // Checking address 1
+               mem_read = 1'b1;
+               mem_access_addr = 16'd1; #5;
+               if (mem_read_data !== 16'h0002)  // expected value from test.data line 1
+                   $display("FAIL [T%0d]: addr=1 got=0x%h exp=0x0002", test_id, mem_read_data);
+                   fail_count = fail_count + 1;
+               else
+                   $display("PASS [T%0d]", test_id);
+               test_id = test_id + 1;
+               mem_read = 1'b0;
+
+               // =========================================
+               // Checking address 2
+               mem_read = 1'b1;
+               mem_access_addr = 16'd2; #5;
+               if (mem_read_data !== 16'h0003)  // expected value from test.data line 2
+                   $display("FAIL [T%0d]: addr=2 got=0x%h exp=0x0003", test_id, mem_read_data);
+                   fail_count = fail_count + 1;
+               else
+                   $display("PASS [T%0d]", test_id);
+               test_id = test_id + 1;
+               mem_read = 1'b0;
+
+               // =========================================
+               // Checking address 3
+               mem_read = 1'b1;
+               mem_access_addr = 16'd3; #5;
+               if (mem_read_data !== 16'h0004)  // expected value from test.data line 3
+                   $display("FAIL [T%0d]: addr=3 got=0x%h exp=0x0004", test_id, mem_read_data);
+                   fail_count = fail_count + 1;
+               else
+                   $display("PASS [T%0d]", test_id);
+               test_id = test_id + 1;
+               mem_read = 1'b0;
+
+               // =========================================
+               // Checking address 4
+               mem_read = 1'b1;
+               mem_access_addr = 16'd4; #5;
+               if (mem_read_data !== 16'h0005)  // expected value from test.data line 4
+                   $display("FAIL [T%0d]: addr=4 got=0x%h exp=0x0005", test_id, mem_read_data);
+                   fail_count = fail_count + 1;
+               else
+                   $display("PASS [T%0d]", test_id);
+               test_id = test_id + 1;
+               mem_read = 1'b0;
+
+               // =========================================
+               // Checking address 5
+               mem_read = 1'b1;
+               mem_access_addr = 16'd5; #5;
+               if (mem_read_data !== 16'h0006)  // expected value from test.data line 5
+                   $display("FAIL [T%0d]: addr=5 got=0x%h exp=0x0006", test_id, mem_read_data);
+                   fail_count = fail_count + 1;
+               else
+                   $display("PASS [T%0d]", test_id);
+               test_id = test_id + 1;
+               mem_read = 1'b0;
+
+               // =========================================
+               // Checking address 6
+               mem_read = 1'b1;
+               mem_access_addr = 16'd6; #5;
+               if (mem_read_data !== 16'h0007)  // expected value from test.data line 6
+                   $display("FAIL [T%0d]: addr=6 got=0x%h exp=0x0007", test_id, mem_read_data);
+                   fail_count = fail_count + 1;
+               else
+                   $display("PASS [T%0d]", test_id);
+               test_id = test_id + 1;
+               mem_read = 1'b0;
+
+               // =========================================
+               // Checking address 7
+               mem_read = 1'b1;
+               mem_access_addr = 16'd7; #5;
+               if (mem_read_data !== 16'h0008)  // expected value from test.data line 7
+                   $display("FAIL [T%0d]: addr=7 got=0x%h exp=0x0008", test_id, mem_read_data);
+                   fail_count = fail_count + 1;
+               else
+                   $display("PASS [T%0d]", test_id);
+               test_id = test_id + 1;
+               mem_read = 1'b0;
 
 
         // ------------------------------------------------------------------
@@ -82,19 +170,148 @@ module DataMemory_tb;
         // TODO: Write a distinct value to each of the 8 addresses using
         //       mem_write_en and posedge clk, then read each back.
         //
-        //       // Write to address 0
-        //       mem_write_en    = 1'b1;
-        //       mem_access_addr = 16'd0;
-        //       mem_write_data  = 16'hABCD;
-        //       @(posedge clk); #1;
-        //       mem_write_en    = 1'b0;
-        //
-        //       // Read back from address 0
-        //       mem_read = 1'b1;
-        //       mem_access_addr = 16'd0; #5;
-        //       if (mem_read_data !== 16'hABCD) ...
-        //       test_id = test_id + 1;
+               // Write to address 0
+               mem_write_en    = 1'b1;
+               mem_access_addr = 16'd0;
+               mem_write_data  = 16'hABCD;
+               @(posedge clk); #1;
+               mem_write_en    = 1'b0;
+               // Read back from address 0
+               mem_read = 1'b1;
+               mem_access_addr = 16'd0; #5;
+               if (mem_read_data !== 16'hABCD) 
+                   $display("FAIL [T%0d]: addr=0 got=0x%h exp=0xABCD", test_id, mem_read_data);
+                   fail_count = fail_count + 1;
+               else
+                   $display("PASS [T%0d]", test_id);
+               test_id = test_id + 1;
+               mem_read = 1'b0;
 
+               // =========================================
+               // Write to address 1
+               mem_write_en    = 1'b1;
+               mem_access_addr = 16'd1;
+               mem_write_data  = 16'hDABC;
+               @(posedge clk); #1;
+               mem_write_en    = 1'b0;
+               // Read back from address 1
+               mem_read = 1'b1;
+               mem_access_addr = 16'd1; #5;
+               if (mem_read_data !== 16'hDABC) 
+                   $display("FAIL [T%0d]: addr=1 got=0x%h exp=0xDABC", test_id, mem_read_data);
+                   fail_count = fail_count + 1;
+               else
+                   $display("PASS [T%0d]", test_id);
+               test_id = test_id + 1;
+               mem_read = 1'b0;
+
+               // =========================================
+               // Write to address 2
+               mem_write_en    = 1'b1;
+               mem_access_addr = 16'd2;
+               mem_write_data  = 16'hCDAB;
+               @(posedge clk); #1;
+               mem_write_en    = 1'b0;
+               // Read back from address 0
+               mem_read = 1'b1;
+               mem_access_addr = 16'd2; #5;
+               if (mem_read_data !== 16'hCDAB) 
+                   $display("FAIL [T%0d]: addr=2 got=0x%h exp=0xCDAB", test_id, mem_read_data);
+                   fail_count = fail_count + 1;
+               else
+                   $display("PASS [T%0d]", test_id);
+               test_id = test_id + 1;
+               mem_read = 1'b0;
+
+               // =========================================
+               // Write to address 3
+               mem_write_en    = 1'b1;
+               mem_access_addr = 16'd3;
+               mem_write_data  = 16'hBCDA;
+               @(posedge clk); #1;
+               mem_write_en    = 1'b0;
+               // Read back from address 3
+               mem_read = 1'b1;
+               mem_access_addr = 16'd3; #5;
+               if (mem_read_data !== 16'hBCDA) 
+                   $display("FAIL [T%0d]: addr=3 got=0x%h exp=0xBCDA", test_id, mem_read_data);
+                   fail_count = fail_count + 1;
+               else
+                   $display("PASS [T%0d]", test_id);
+               test_id = test_id + 1;
+               mem_read = 1'b0;
+
+               // =========================================
+               // Write to address 4
+               mem_write_en    = 1'b1;
+               mem_access_addr = 16'd4;
+               mem_write_data  = 16'hAABB;
+               @(posedge clk); #1;
+               mem_write_en    = 1'b0;
+               // Read back from address 4
+               mem_read = 1'b1;
+               mem_access_addr = 16'd4; #5;
+               if (mem_read_data !== 16'hAABB) 
+                   $display("FAIL [T%0d]: addr=4 got=0x%h exp=0xAABB", test_id, mem_read_data);
+                   fail_count = fail_count + 1;
+               else
+                   $display("PASS [T%0d]", test_id);
+               test_id = test_id + 1;
+               mem_read = 1'b0;
+
+               // =========================================
+               // Write to address 5
+               mem_write_en    = 1'b1;
+               mem_access_addr = 16'd5;
+               mem_write_data  = 16'hBAAB;
+               @(posedge clk); #1;
+               mem_write_en    = 1'b0;
+               // Read back from address 5
+               mem_read = 1'b1;
+               mem_access_addr = 16'd5; #5;
+               if (mem_read_data !== 16'hBAAB) 
+                   $display("FAIL [T%0d]: addr=5 got=0x%h exp=0xBAAB", test_id, mem_read_data);
+                   fail_count = fail_count + 1;
+               else
+                   $display("PASS [T%0d]", test_id);
+               test_id = test_id + 1;
+               mem_read = 1'b0;
+
+               // =========================================
+               // Write to address 6
+               mem_write_en    = 1'b1;
+               mem_access_addr = 16'd6;
+               mem_write_data  = 16'hBBAA;
+               @(posedge clk); #1;
+               mem_write_en    = 1'b0;
+               // Read back from address 6
+               mem_read = 1'b1;
+               mem_access_addr = 16'd6; #5;
+               if (mem_read_data !== 16'hBBAA) 
+                   $display("FAIL [T%0d]: addr=6 got=0x%h exp=0xBBAA", test_id, mem_read_data);
+                   fail_count = fail_count + 1;
+               else
+                   $display("PASS [T%0d]", test_id);
+               test_id = test_id + 1;
+               mem_read = 1'b0;
+
+               // =========================================
+               // Write to address 7
+               mem_write_en    = 1'b1;
+               mem_access_addr = 16'd7;
+               mem_write_data  = 16'hCCDD;
+               @(posedge clk); #1;
+               mem_write_en    = 1'b0;
+               // Read back from address 7
+               mem_read = 1'b1;
+               mem_access_addr = 16'd7; #5;
+               if (mem_read_data !== 16'hCCDD) 
+                   $display("FAIL [T%0d]: addr=7 got=0x%h exp=0xCCDD", test_id, mem_read_data);
+                   fail_count = fail_count + 1;
+               else
+                   $display("PASS [T%0d]", test_id);
+               test_id = test_id + 1;
+               mem_read = 1'b0;
 
         // ------------------------------------------------------------------
         // TEST GROUP 3: mem_read = 0 must produce 16'd0 output
@@ -104,14 +321,84 @@ module DataMemory_tb;
         // TODO: De-assert mem_read and verify the output is 16'd0 regardless
         //       of the address.
         //
-        //       mem_read = 1'b0;
-        //       mem_access_addr = 16'd0; #5;
-        //       if (mem_read_data !== 16'd0)
-        //           $display("FAIL [T%0d]: mem_read=0 but output=%h", test_id, mem_read_data);
-        //       else
-        //           $display("PASS [T%0d]: output = 0 when mem_read=0", test_id);
-        //       test_id = test_id + 1;
+               // Checking with address 0
+               mem_read = 1'b0;
+               mem_access_addr = 16'd0; #5;
+               if (mem_read_data !== 16'd0)
+                   $display("FAIL [T%0d]: mem_read=0 but output=%h", test_id, mem_read_data);
+               else
+                   $display("PASS [T%0d]: output = 0 when mem_read=0", test_id);
+               test_id = test_id + 1;
 
+               // =========================================
+               // Checking with address 1
+               mem_read = 1'b0;
+               mem_access_addr = 16'd1; #5;
+               if (mem_read_data !== 16'd0)
+                   $display("FAIL [T%0d]: mem_read=0 but output=%h", test_id, mem_read_data);
+               else
+                   $display("PASS [T%0d]: output = 0 when mem_read=0", test_id);
+               test_id = test_id + 1;
+
+               // =========================================
+               // Checking with address 2
+               mem_read = 1'b0;
+               mem_access_addr = 16'd2; #5;
+               if (mem_read_data !== 16'd0)
+                   $display("FAIL [T%0d]: mem_read=0 but output=%h", test_id, mem_read_data);
+               else
+                   $display("PASS [T%0d]: output = 0 when mem_read=0", test_id);
+               test_id = test_id + 1;
+
+               // =========================================
+               // Checking with address 3
+               mem_read = 1'b0;
+               mem_access_addr = 16'd3; #5;
+               if (mem_read_data !== 16'd0)
+                   $display("FAIL [T%0d]: mem_read=0 but output=%h", test_id, mem_read_data);
+               else
+                   $display("PASS [T%0d]: output = 0 when mem_read=0", test_id);
+               test_id = test_id + 1;
+
+               // =========================================
+               // Checking with address 4
+               mem_read = 1'b0;
+               mem_access_addr = 16'd4; #5;
+               if (mem_read_data !== 16'd0)
+                   $display("FAIL [T%0d]: mem_read=0 but output=%h", test_id, mem_read_data);
+               else
+                   $display("PASS [T%0d]: output = 0 when mem_read=0", test_id);
+               test_id = test_id + 1;
+
+               // =========================================
+               // Checking with address 5
+               mem_read = 1'b0;
+               mem_access_addr = 16'd5; #5;
+               if (mem_read_data !== 16'd0)
+                   $display("FAIL [T%0d]: mem_read=0 but output=%h", test_id, mem_read_data);
+               else
+                   $display("PASS [T%0d]: output = 0 when mem_read=0", test_id);
+               test_id = test_id + 1;
+
+               // =========================================
+               // Checking with address 6
+               mem_read = 1'b0;
+               mem_access_addr = 16'd6; #5;
+               if (mem_read_data !== 16'd0)
+                   $display("FAIL [T%0d]: mem_read=0 but output=%h", test_id, mem_read_data);
+               else
+                   $display("PASS [T%0d]: output = 0 when mem_read=0", test_id);
+               test_id = test_id + 1;
+
+               // =========================================
+               // Checking with address 7
+               mem_read = 1'b0;
+               mem_access_addr = 16'd7; #5;
+               if (mem_read_data !== 16'd0)
+                   $display("FAIL [T%0d]: mem_read=0 but output=%h", test_id, mem_read_data);
+               else
+                   $display("PASS [T%0d]: output = 0 when mem_read=0", test_id);
+               test_id = test_id + 1;
 
         // ------------------------------------------------------------------
         // TEST GROUP 4: Write then immediately read on the next cycle
@@ -120,7 +407,26 @@ module DataMemory_tb;
 
         // TODO: Write to address 3, then on the very next cycle read back
         //       from address 3 and confirm the new value is returned.
-
+                            
+               // Write to address 3
+               mem_write_en = 1'b1;
+               mem_access_addr = 16'd3;
+               mem_write_data  = 16'hABCD;
+               @(posedge clk);
+               mem_write_en = 1'b0;
+               
+               // Read back from address 3
+               mem_read = 1'b1;
+               mem_access_addr = 16'd3; #5;
+               if (mem_read_data !== 16'hABCD) 
+                   $display("FAIL [T%0d]: addr=3 got=0x%h exp=0xABCD", test_id, mem_read_data);
+                   fail_count = fail_count + 1;
+               else
+                   $display("PASS [T%0d]", test_id);
+               @(posedge clk);
+               test_id = test_id + 1;
+               mem_read = 1'b0;
+                          
 
         // ------------------------------------------------------------------
         // TEST GROUP 5: Disabled write must not alter memory
@@ -129,7 +435,176 @@ module DataMemory_tb;
 
         // TODO: Assert mem_write_en=0, clock one cycle, then read and confirm
         //       the previous value is unchanged.
+               
+               // =========================================
 
+               // Write to address 0
+               mem_write_en    = 1'b1;
+               mem_access_addr = 16'd0;
+               mem_write_data  = 16'hCCDD;
+               @(posedge clk); #1;
+               mem_write_en    = 1'b0;
+               mem_write_data  = 16'hABCD; // should NOT be written
+               @(posedge clk);
+               // Read back from address 0
+               mem_read = 1'b1;
+               mem_access_addr = 16'd0; #5;
+               if (mem_read_data !== 16'hCCDD) 
+                   $display("FAIL [T%0d]: addr=0 got=0x%h exp=0xCCDD", test_id, mem_read_data);
+                   fail_count = fail_count + 1;
+               else
+                   $display("PASS [T%0d]", test_id);
+               test_id = test_id + 1;
+               mem_read = 1'b0;
+
+               // =========================================
+
+               // Write to address 1
+               mem_write_en    = 1'b1;
+               mem_access_addr = 16'd1;
+               mem_write_data  = 16'hBBAA;
+               @(posedge clk); #1;
+               mem_write_en    = 1'b0;
+               mem_write_data  = 16'hDABC; // should NOT be written
+               @(posedge clk);
+               // Read back from address 1
+               mem_read = 1'b1;
+               mem_access_addr = 16'd1; #5;
+               if (mem_read_data !== 16'hBBAA) 
+                   $display("FAIL [T%0d]: addr=1 got=0x%h exp=0xBBAA", test_id, mem_read_data);
+                   fail_count = fail_count + 1;
+               else
+                   $display("PASS [T%0d]", test_id);
+               test_id = test_id + 1;
+               mem_read = 1'b0;
+
+               // =========================================
+
+               // Write to address 2
+               mem_write_en    = 1'b1;
+               mem_access_addr = 16'd2;
+               mem_write_data  = 16'hBAAB;
+               @(posedge clk); #1;
+               mem_write_en    = 1'b0;
+               mem_write_data  = 16'hCDAB; // should NOT be written
+               @(posedge clk);
+               // Read back from address 2
+               mem_read = 1'b1;
+               mem_access_addr = 16'd2; #5;
+               if (mem_read_data !== 16'hBAAB) 
+                   $display("FAIL [T%0d]: addr=2 got=0x%h exp=0xBAAB", test_id, mem_read_data);
+                   fail_count = fail_count + 1;
+               else
+                   $display("PASS [T%0d]", test_id);
+               test_id = test_id + 1;
+               mem_read = 1'b0;
+
+               // =========================================
+
+               // Write to address 3
+               mem_write_en    = 1'b1;
+               mem_access_addr = 16'd3;
+               mem_write_data  = 16'hAABB;
+               @(posedge clk); #1;
+               mem_write_en    = 1'b0;
+               mem_write_data  = 16'hBCDA; // should NOT be written
+               @(posedge clk);
+               // Read back from address 3
+               mem_read = 1'b1;
+               mem_access_addr = 16'd3; #5;
+               if (mem_read_data !== 16'hAABB) 
+                   $display("FAIL [T%0d]: addr=3 got=0x%h exp=0xAABB", test_id, mem_read_data);
+                   fail_count = fail_count + 1;
+               else
+                   $display("PASS [T%0d]", test_id);
+               test_id = test_id + 1;
+               mem_read = 1'b0;
+
+               // =========================================
+
+               // Write to address 4
+               mem_write_en    = 1'b1;
+               mem_access_addr = 16'd4;
+               mem_write_data  = 16'hBCDA;
+               @(posedge clk); #1;
+               mem_write_en    = 1'b0;
+               mem_write_data  = 16'hAABB; // should NOT be written
+               @(posedge clk);
+               // Read back from address 4
+               mem_read = 1'b1;
+               mem_access_addr = 16'd4; #5;
+               if (mem_read_data !== 16'hBCDA) 
+                   $display("FAIL [T%0d]: addr=4 got=0x%h exp=0xBCDA", test_id, mem_read_data);
+                   fail_count = fail_count + 1;
+               else
+                   $display("PASS [T%0d]", test_id);
+               test_id = test_id + 1;
+               mem_read = 1'b0;
+
+               // =========================================
+
+               // Write to address 5
+               mem_write_en    = 1'b1;
+               mem_access_addr = 16'd5;
+               mem_write_data  = 16'hCDAB;
+               @(posedge clk); #1;
+               mem_write_en    = 1'b0;
+               mem_write_data  = 16'hBAAB; // should NOT be written
+               @(posedge clk);
+               // Read back from address 5
+               mem_read = 1'b1;
+               mem_access_addr = 16'd5; #5;
+               if (mem_read_data !== 16'hCDAB) 
+                   $display("FAIL [T%0d]: addr=5 got=0x%h exp=0xCDAB", test_id, mem_read_data);
+                   fail_count = fail_count + 1;
+               else
+                   $display("PASS [T%0d]", test_id);
+               test_id = test_id + 1;
+               mem_read = 1'b0;
+
+               // =========================================
+
+               // Write to address 6
+               mem_write_en    = 1'b1;
+               mem_access_addr = 16'd6;
+               mem_write_data  = 16'hDABC;
+               @(posedge clk); #1;
+               mem_write_en    = 1'b0;
+               mem_write_data  = 16'hBBAA; // should NOT be written
+               @(posedge clk);
+               // Read back from address 6
+               mem_read = 1'b1;
+               mem_access_addr = 16'd6; #5;
+               if (mem_read_data !== 16'hDABC) 
+                   $display("FAIL [T%0d]: addr=6 got=0x%h exp=0xDABC", test_id, mem_read_data);
+                   fail_count = fail_count + 1;
+               else
+                   $display("PASS [T%0d]", test_id);
+               test_id = test_id + 1;
+               mem_read = 1'b0;
+
+               // =========================================
+
+               // Write to address 7
+               mem_write_en    = 1'b1;
+               mem_access_addr = 16'd7;
+               mem_write_data  = 16'hABCD;
+               @(posedge clk); #1;
+               mem_write_en    = 1'b0;
+               mem_write_data  = 16'hCCDD; // should NOT be written
+               @(posedge clk);
+               // Read back from address 7
+               mem_read = 1'b1;
+               mem_access_addr = 16'd7; #5;
+               if (mem_read_data !== 16'hABCD) 
+                   $display("FAIL [T%0d]: addr=7 got=0x%h exp=0xABCD", test_id, mem_read_data);
+                   fail_count = fail_count + 1;
+               else
+                   $display("PASS [T%0d]", test_id);
+               test_id = test_id + 1;
+               mem_read = 1'b0;
+
+               // =========================================
 
         $display("");
         if (fail_count == 0)
