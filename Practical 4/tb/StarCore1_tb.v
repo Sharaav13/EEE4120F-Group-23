@@ -207,7 +207,7 @@ module StarCore1_tb;
          check16(uut.DU.reg_file.reg_array[2], 16'h0001, test_id);
          test_id = test_id + 1;
 
-         $display("Checking PC after BEQ R0,R1,+1 (R0==R1, TAKEN, expect PC=0x0016):");
+         $display("Checking PC after BEQ R0 R1 +1 (R0==R1, TAKEN, expect PC=0x0016):");
          check16(uut.DU.pc_current, 16'h0016, test_id);
          test_id = test_id + 1;
 

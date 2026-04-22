@@ -209,7 +209,7 @@ module ALU_Control_tb;
         // TODO: Apply ALUOp=2'b00 with an undefined opcode (e.g. 4'hA or 4'hF)
         //       and verify ALU_Cnt defaults to 3'b000.
 
-               // Test for undefined Opcode 1010
+               // Test for reserved Opcode 1010
                ALUOp=2'b00; Opcode=4'hA; #10;
                check_cnt(ALU_Cnt, 3'b000, test_id); test_id=test_id+1;
 

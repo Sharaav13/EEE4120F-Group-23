@@ -325,7 +325,7 @@ module DataMemory_tb;
                mem_read = 1'b0;
                mem_access_addr = 16'd0; #5;
                if (mem_read_data !== 16'd0)
-                   $display("FAIL [T%0d]: mem_read=0 but output=%h", test_id, mem_read_data);
+                   $display("FAIL [T%0d]: addr=0 mem_read=0 but output=%h", test_id, mem_read_data);
                else
                    $display("PASS [T%0d]: output = 0 when mem_read=0", test_id);
                test_id = test_id + 1;
@@ -335,7 +335,7 @@ module DataMemory_tb;
                mem_read = 1'b0;
                mem_access_addr = 16'd1; #5;
                if (mem_read_data !== 16'd0)
-                   $display("FAIL [T%0d]: mem_read=0 but output=%h", test_id, mem_read_data);
+                   $display("FAIL [T%0d]: addr=1 mem_read=0 but output=%h", test_id, mem_read_data);
                else
                    $display("PASS [T%0d]: output = 0 when mem_read=0", test_id);
                test_id = test_id + 1;
@@ -345,7 +345,7 @@ module DataMemory_tb;
                mem_read = 1'b0;
                mem_access_addr = 16'd2; #5;
                if (mem_read_data !== 16'd0)
-                   $display("FAIL [T%0d]: mem_read=0 but output=%h", test_id, mem_read_data);
+                   $display("FAIL [T%0d]: addr=2 mem_read=0 but output=%h", test_id, mem_read_data);
                else
                    $display("PASS [T%0d]: output = 0 when mem_read=0", test_id);
                test_id = test_id + 1;
@@ -355,7 +355,7 @@ module DataMemory_tb;
                mem_read = 1'b0;
                mem_access_addr = 16'd3; #5;
                if (mem_read_data !== 16'd0)
-                   $display("FAIL [T%0d]: mem_read=0 but output=%h", test_id, mem_read_data);
+                   $display("FAIL [T%0d]: addr=3 mem_read=0 but output=%h", test_id, mem_read_data);
                else
                    $display("PASS [T%0d]: output = 0 when mem_read=0", test_id);
                test_id = test_id + 1;
@@ -365,7 +365,7 @@ module DataMemory_tb;
                mem_read = 1'b0;
                mem_access_addr = 16'd4; #5;
                if (mem_read_data !== 16'd0)
-                   $display("FAIL [T%0d]: mem_read=0 but output=%h", test_id, mem_read_data);
+                   $display("FAIL [T%0d]: addr=4 mem_read=0 but output=%h", test_id, mem_read_data);
                else
                    $display("PASS [T%0d]: output = 0 when mem_read=0", test_id);
                test_id = test_id + 1;
@@ -375,7 +375,7 @@ module DataMemory_tb;
                mem_read = 1'b0;
                mem_access_addr = 16'd5; #5;
                if (mem_read_data !== 16'd0)
-                   $display("FAIL [T%0d]: mem_read=0 but output=%h", test_id, mem_read_data);
+                   $display("FAIL [T%0d]: addr=5 mem_read=0 but output=%h", test_id, mem_read_data);
                else
                    $display("PASS [T%0d]: output = 0 when mem_read=0", test_id);
                test_id = test_id + 1;
@@ -385,7 +385,7 @@ module DataMemory_tb;
                mem_read = 1'b0;
                mem_access_addr = 16'd6; #5;
                if (mem_read_data !== 16'd0)
-                   $display("FAIL [T%0d]: mem_read=0 but output=%h", test_id, mem_read_data);
+                   $display("FAIL [T%0d]: addr=6 mem_read=0 but output=%h", test_id, mem_read_data);
                else
                    $display("PASS [T%0d]: output = 0 when mem_read=0", test_id);
                test_id = test_id + 1;
@@ -395,7 +395,7 @@ module DataMemory_tb;
                mem_read = 1'b0;
                mem_access_addr = 16'd7; #5;
                if (mem_read_data !== 16'd0)
-                   $display("FAIL [T%0d]: mem_read=0 but output=%h", test_id, mem_read_data);
+                   $display("FAIL [T%0d]: addr=7 mem_read=0 but output=%h", test_id, mem_read_data);
                else
                    $display("PASS [T%0d]: output = 0 when mem_read=0", test_id);
                test_id = test_id + 1;
@@ -444,6 +444,7 @@ module DataMemory_tb;
                mem_write_data  = 16'hCCDD;
                @(posedge clk); #1;
                mem_write_en    = 1'b0;
+               mem_access_addr = 16'd0;
                mem_write_data  = 16'hABCD; // should NOT be written
                @(posedge clk);
                // Read back from address 0
@@ -465,6 +466,7 @@ module DataMemory_tb;
                mem_write_data  = 16'hBBAA;
                @(posedge clk); #1;
                mem_write_en    = 1'b0;
+               mem_access_addr = 16'd1;
                mem_write_data  = 16'hDABC; // should NOT be written
                @(posedge clk);
                // Read back from address 1
@@ -486,6 +488,7 @@ module DataMemory_tb;
                mem_write_data  = 16'hBAAB;
                @(posedge clk); #1;
                mem_write_en    = 1'b0;
+               mem_access_addr = 16'd2;
                mem_write_data  = 16'hCDAB; // should NOT be written
                @(posedge clk);
                // Read back from address 2
@@ -507,6 +510,7 @@ module DataMemory_tb;
                mem_write_data  = 16'hAABB;
                @(posedge clk); #1;
                mem_write_en    = 1'b0;
+               mem_access_addr = 16'd3;
                mem_write_data  = 16'hBCDA; // should NOT be written
                @(posedge clk);
                // Read back from address 3
@@ -528,6 +532,7 @@ module DataMemory_tb;
                mem_write_data  = 16'hBCDA;
                @(posedge clk); #1;
                mem_write_en    = 1'b0;
+               mem_access_addr = 16'd4;
                mem_write_data  = 16'hAABB; // should NOT be written
                @(posedge clk);
                // Read back from address 4
@@ -549,6 +554,7 @@ module DataMemory_tb;
                mem_write_data  = 16'hCDAB;
                @(posedge clk); #1;
                mem_write_en    = 1'b0;
+               mem_access_addr = 16'd5;
                mem_write_data  = 16'hBAAB; // should NOT be written
                @(posedge clk);
                // Read back from address 5
@@ -570,6 +576,7 @@ module DataMemory_tb;
                mem_write_data  = 16'hDABC;
                @(posedge clk); #1;
                mem_write_en    = 1'b0;
+               mem_access_addr = 16'd6;
                mem_write_data  = 16'hBBAA; // should NOT be written
                @(posedge clk);
                // Read back from address 6
@@ -591,6 +598,7 @@ module DataMemory_tb;
                mem_write_data  = 16'hABCD;
                @(posedge clk); #1;
                mem_write_en    = 1'b0;
+               mem_access_addr = 16'd7;
                mem_write_data  = 16'hCCDD; // should NOT be written
                @(posedge clk);
                // Read back from address 7

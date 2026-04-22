@@ -117,7 +117,7 @@ module ControlUnit (
                        end
     //
                        4'b1100: begin  // BNE
-                           beq    = 1'b1;
+                           bne    = 1'b1;
                            alu_op = 2'b01;
                        end
     //
