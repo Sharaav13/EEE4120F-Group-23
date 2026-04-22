@@ -100,8 +100,7 @@ module ControlUnit (
     //                   // R-type instructions share identical control signals.
     //                   // List each opcode individually OR use a Verilog 2001
     //                   // comma-separated case item:
-                       4'b0010, 4'b0011, 4'b0100, 4'b0101,
-                       4'b0110, 4'b0111, 4'b1000, 4'b1001: begin ...
+                       4'b0010, 4'b0011, 4'b0100, 4'b0101, 4'b0110, 4'b0111, 4'b1000, 4'b1001: begin
                            reg_dst   = 1'b1;
                            reg_write = 1'b1;
                        end
