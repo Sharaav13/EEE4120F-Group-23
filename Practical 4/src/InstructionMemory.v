@@ -64,7 +64,7 @@ module InstructionMemory (
     // -------------------------------------------------------------------------
 
     initial begin
-              $readmemb("./test/test.prog", memory, 0, 14);
+              $readmemb("../test/test.prog", memory, 0, 14);
            end
     // -------------------------------------------------------------------------
     // TODO: Drive the instruction output with a continuous assignment.
