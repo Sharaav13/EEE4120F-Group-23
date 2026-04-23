@@ -120,10 +120,10 @@ module StarCore1_tb;
      end
     //
     // PLACEHOLDER — prints time only until you uncomment the full trace above.
-    always @(posedge clk) begin
-        $display("%0t ns | clock tick (uncomment trace block when Datapath is implemented)",
-                 $time);
-    end
+    // always @(posedge clk) begin
+        //$display("%0t ns | clock tick (uncomment trace block when Datapath is implemented)",
+                 //$time);
+    //end
 
     // =========================================================================
     // MAIN STIMULUS BLOCK
