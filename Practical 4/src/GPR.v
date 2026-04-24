@@ -5,8 +5,8 @@
 // GROUP NUMBER:
 //
 // MEMBERS:
-//   - Member 1 Name, Student Number
-//   - Member 2 Name, Student Number
+//   - Member 1 Max Mendelow, MNDMAX003
+//   - Member 2 Sharaav Dhebideen, DHBSHA001
 
 // File        : GPR.v
 // Description : General Purpose Register File.
